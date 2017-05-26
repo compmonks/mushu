@@ -30,27 +30,30 @@ automatically receive decorated amplifiers.
 
 """
 
-from __future__ import division
+
 
 import select
 import socket
 import time
-from multiprocessing import Process, Queue, Event
+#from multiprocessing import Process, Queue, Event
+from multiprocess import Process, Queue, Event
 import os
 import struct
 import json
 import logging
 import asyncore
 import asynchat
-
+import sys
+sys.path.append("../")
 from libmushu.amplifier import Amplifier
 
+#logging.basicConfig(format='%(relativeCreated)10.0f %(threadName)-10s %(name)-10s %(levelname)8s %(message)s', level=logging.WARNING)
 
 logger = logging.getLogger(__name__)
 logger.info('Logger started')
 
 
-END_MARKER = '\n'
+END_MARKER = str('\n')
 BUFSIZE = 2**16
 PORT = 12344
 
@@ -298,16 +301,21 @@ class MarkerServer(asyncore.dispatcher):
         if proto.lower() == 'tcp':
             logger.debug('Opening TCP socket.')
             self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            self.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-            self.setblocking(0)
+            #self.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            #self.set_reuse_addr()
+            #self.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+            self.socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+            self.socket.setblocking(0)
             self.bind(('', PORT))
             self.listen(5)
         elif proto.lower() == 'udp':
             logger.debug('Opening UDP socket.')
             self.create_socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            self.setblocking(0)
+            #self.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            #self.set_reuse_addr()
+            self.socket.setblocking(0)
             self.bind(('', PORT))
             # in contrast to a TCP socket, an UDP socket has no
             # connection, so the socket is immediately ready to receive

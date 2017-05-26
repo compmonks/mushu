@@ -1,4 +1,4 @@
-from __future__ import division
+
 
 import time
 import logging
@@ -8,7 +8,7 @@ import pylsl
 
 from libmushu.amplifier import Amplifier
 
-
+#logging.basicConfig(format='%(relativeCreated)10.0f %(threadName)-10s %(name)-10s %(levelname)8s %(message)s', level=logging.WARNING)
 logger = logging.getLogger(__name__)
 logger.info('Logger started.')
 
@@ -59,7 +59,10 @@ class LSLAmp(Amplifier):
         logger.debug('Opening Marker stream...')
         # TODO: should add a timeout here in case there is no marker
         # stream
-        streams = pylsl.resolve_stream('type', 'Markers')
+        #streams = pylsl.resolve_stream('type', 'Markers')
+        # Mods By CPMK #####################################################################
+        streams = pylsl.resolve_stream()
+        # End Mods #########################################################################
         if len(streams) > 1:
             logger.warning('Number of Marker streams is > 0, picking the first one.')
         self.lsl_marker_inlet = pylsl.StreamInlet(streams[0])
@@ -112,7 +115,7 @@ class LSLAmp(Amplifier):
         t0 = timestamps[0] + tc_s
         m_timestamps = [(i + tc_m - t0) * 1000 for i in m_timestamps]
 
-        return samples, zip(m_timestamps, markers)
+        return samples, list(zip(m_timestamps, markers))
 
     def get_channels(self):
         """Get channel names.

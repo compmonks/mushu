@@ -1,7 +1,9 @@
-from __future__ import division
 
+import unittest
 from unittest import TestCase
 
+import sys
+sys.path.append("../")
 import libmushu
 
 
@@ -32,3 +34,6 @@ class TestReplayAmp(TestCase):
             self.amp.configure(data=None, marker=[], channels=None, fs=1000, blocksize_ms=10)
         except ValueError:
             self.fail()
+
+if __name__ == '__main__':
+    unittest.main()

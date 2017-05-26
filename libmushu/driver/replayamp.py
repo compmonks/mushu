@@ -1,6 +1,6 @@
 
 
-from __future__ import division
+
 
 import time
 
@@ -89,7 +89,7 @@ class ReplayAmp(Amplifier):
 
         # fast numpy version
         mask = self.marker_ts < (elapsed * 1000)
-        markers = zip(self.marker_ts[mask], self.marker_s[mask])
+        markers = list(zip(self.marker_ts[mask], self.marker_s[mask]))
         self.marker_ts = self.marker_ts[~mask]
         self.marker_s = self.marker_s[~mask]
         self.marker_ts -= elapsed * 1000

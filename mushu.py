@@ -20,8 +20,10 @@
 
 import logging
 import time
-import ttk
-import Tkinter as tk
+#import ttk
+#import Tkinter as tk
+from tkinter import ttk
+import tkinter as tk
 
 import matplotlib
 matplotlib.use('TkAgg')
@@ -33,7 +35,9 @@ import numpy as np
 
 import libmushu
 
-logging.basicConfig(format='%(relativeCreated)10.0f %(threadName)-10s %(name)-10s %(levelname)8s %(message)s', level=logging.NOTSET)
+#logging.basicConfig(format='%(relativeCreated)10.0f %(threadName)-10s %(name)-10s %(levelname)8s %(message)s', level=logging.NOTSET)
+#logging.basicConfig(format='%(levelname)8s %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(levelname)8s %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 logger.info('Logger started')
 
@@ -166,7 +170,8 @@ class Gui(ttk.Frame):
                 line.set_ydata(data_clean[:, j] + j * SCALE)
                 ticklocs.append(j * SCALE)
             self.axis.set_ylim(-SCALE, self.n_channels * SCALE)
-            self.axis.set_xlim(i - self.PAST_POINTS, i)
+            #self.axis.set_xlim(i - self.PAST_POINTS, i)
+            self.axis.set_xlim(len(x)- self.PAST_POINTS, len(x) )
             self.axis.set_yticks(ticklocs)
             self.axis.set_yticklabels(self.channels)
             self.canvas.draw()

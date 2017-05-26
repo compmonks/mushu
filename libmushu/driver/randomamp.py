@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from __future__ import division
+
 
 import time
 import math
@@ -59,7 +59,9 @@ class RandomAmp(Amplifier):
         samples = math.floor(self.fs * dt)
         # actual time according to number of samples we're sending out
         dt = samples / self.fs
-        data = np.random.randint(0, 1024, (samples, self.channels))
+        # Mods By CPMK #####################################################################
+        data = np.random.randint(0, 1024, size=(int(samples), self.channels))
+        # End Mods #########################################################################
         self.last_sample += dt
         return data, []
 

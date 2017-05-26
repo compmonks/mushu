@@ -18,22 +18,25 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-from __future__ import division
+
 
 import unittest
 import json
 import socket
 import time
 import math
-
+import sys
+sys.path.append("../")
 import libmushu
 from libmushu.driver.randomamp import RandomAmp
 from libmushu.amplifier import Amplifier
 import logging
 
 import numpy as np
-from matplotlib import pyplot as plt
+import matplotlib
+matplotlib.use('TkAgg')
 
+from matplotlib import pyplot as plt
 
 logging.basicConfig(format='%(relativeCreated)10.0f %(processName)-11s %(threadName)-10s %(name)-10s %(levelname)8s %(message)s', level=logging.NOTSET)
 logger = logging.getLogger(__name__)
@@ -57,8 +60,8 @@ class TriggerTestAmp(Amplifier):
     def start(self):
         self._marker_count = 0
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.s.connect(('localhost', 12344))
-
+        self.s.connect(('localhost', 12344)) 
+        # self.s.connect(('/dev/tty.usbserial-DQ007MS3', 12344))
     @property
     def sample_len(self):
         return 1. / self.fs
@@ -68,13 +71,15 @@ class TriggerTestAmp(Amplifier):
         return time.time() - self.last_sample
 
     def get_data(self):
-        self.s.sendall("%f\n" % time.time())
+        #self.s.sendall("%f\n" % time.time())
+        self.s.sendall(b"%f\n" % time.time())
         # simulate blocking until we have enough data
         elapsed = self.elapsed
         if elapsed < self.sample_len:
             time.sleep(self.sample_len - elapsed)
         self._marker_count += 1
-        self.s.sendall("%f\n" % time.time())
+        #self.s.sendall("%f\n" % time.time())
+        self.s.sendall(b"%f\n" % time.time())
         dt = self.elapsed
         samples = math.floor(self.fs * dt)
         data = np.random.randint(0, 1024, (samples, self.channels))

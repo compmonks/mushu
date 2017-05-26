@@ -48,7 +48,7 @@ features you need.
 """
 
 
-from __future__ import division
+
 
 from importlib import import_module
 import logging
@@ -96,7 +96,7 @@ def get_available_amps():
 
     """
     available_amps = []
-    for name, (mod, cls) in supported_amps.items():
+    for name, (mod, cls) in list(supported_amps.items()):
         try:
             m = import_module('libmushu.driver.' + mod)
         except ImportError:
