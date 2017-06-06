@@ -37,10 +37,10 @@ import libmushu
 
 #logging.basicConfig(format='%(relativeCreated)10.0f %(threadName)-10s %(name)-10s %(levelname)8s %(message)s', level=logging.NOTSET)
 #logging.basicConfig(format='%(levelname)8s %(message)s', level=logging.DEBUG)
-logging.basicConfig(format='%(levelname)8s %(message)s', level=logging.INFO)
-logger = logging.getLogger(__name__)
-logger.info('Logger started')
-
+#logging.basicConfig(format='%(levelname)8s %(message)s', level=logging.INFO)
+#logger = logging.getLogger(__name__)
+#logger.info('Logger started')
+logging.basicConfig(format='%(levelname)8s %(message)s', level=logging.NOTSET)
 
 class Gui(ttk.Frame):
 
